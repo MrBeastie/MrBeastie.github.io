@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blessdev — Автоматизация бизнеса через AI, ботов и парсеры</title>
+    <meta name="description"
+        content="Разрабатываю Telegram-ботов, парсеры и AI-интеграции для бизнеса. Ваш конкурент уже автоматизировался — пора и вам.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Cursor glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">bless<span>dev</span></a>
+            <div class="nav-links">
+                <a href="#cases">Кейсы</a>
+                <a href="#services">Услуги</a>
+                <a href="#stack">Стек</a>
+                <a href="https://t.me/blessdev_off" target="_blank" class="nav-cta">Написать →</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="grid-lines"></div>
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="pulse"></span>
+                Принимаю заказы
+            </div>
+            <h1>
+                Автоматизирую бизнес<br>
+                через <span class="gradient-text">AI, ботов</span><br>
+                <span class="gradient-text">и парсеры</span>
+            </h1>
+            <p class="hero-sub">
+                Telegram-боты с AI · Парсинг любых сайтов без API · Мониторинг конкурентов ·
+                Всё что можно автоматизировать — автоматизирую
+            </p>
+            <div class="hero-actions">
+                <a href="https://t.me/blessdev_off" target="_blank" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13" />
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                    </svg>
+                    Обсудить проект
+                </a>
+                <a href="#cases" class="btn btn-ghost">Смотреть кейсы ↓</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" data-target="4">0</span>
+                    <span class="stat-label">Проекта в продакшене</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-target="12">0</span><span class="stat-suffix">+</span>
+                    <span class="stat-label">Интеграций API</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-target="50">0</span><span class="stat-suffix">к+</span>
+                    <span class="stat-label">Строк Python-кода</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Problems -->
+    <section class="problems" id="problems">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Проблемы</span>
+                <h2>Знакомо?</h2>
+            </div>
+            <div class="problems-grid">
+                <div class="problem-card" data-delay="0">
+                    <div class="problem-icon">⏰</div>
+                    <h3>Тратите часы на рутину</h3>
+                    <p>Ручной сбор данных, копирование из таблиц, проверка обновлений — всё это можно автоматизировать
+                        за дни</p>
+                </div>
+                <div class="problem-card" data-delay="100">
+                    <div class="problem-icon">📉</div>
+                    <h3>Конкуренты снижают цены</h3>
+                    <p>А вы узнаёте об этом последним. Автоматический мониторинг цен и стратегий конкурентов решает это
+                    </p>
+                </div>
+                <div class="problem-card" data-delay="200">
+                    <div class="problem-icon">🤖</div>
+                    <h3>Клиенты пишут — вы не успеваете</h3>
+                    <p>AI-бот отвечает мгновенно, принимает заказы и записывает клиентов 24/7, пока вы спите</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cases -->
+    <section class="cases" id="cases">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Кейсы</span>
+                <h2>Что я построил</h2>
+            </div>
+            <div class="cases-grid">
+
+                <!-- Case 1 -->
+                <div class="case-card featured">
+                    <div class="case-header">
+                        <span class="case-tag">Парсинг + AI</span>
+                        <span class="case-status live">● Live</span>
+                    </div>
+                    <h3>Мониторинг маркетплейсов с AI-фильтрацией</h3>
+                    <p>Система автоматического поиска выгодных товаров на 2 японских маркетплейсах. Парсеры собирают
+                        лоты по настроенным брендам → AI (GPT) оценивает каждый лот на выгодность → лучшие сделки
+                        мгновенно приходят в Telegram.</p>
+                    <div class="case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">20</span>
+                            <span class="metric-label">Брендов</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">2</span>
+                            <span class="metric-label">Маркетплейса</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">24/7</span>
+                            <span class="metric-label">Мониторинг</span>
+                        </div>
+                    </div>
+                    <div class="case-stack">
+                        <span>Python</span>
+                        <span>BeautifulSoup</span>
+                        <span>OpenAI API</span>
+                        <span>aiogram 3</span>
+                        <span>PostgreSQL</span>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="case-card featured">
+                    <div class="case-header">
+                        <span class="case-tag">Графовая аналитика</span>
+                        <span class="case-status live">● Live</span>
+                    </div>
+                    <h3>Аналитическая платформа для музыкальной индустрии</h3>
+                    <p>Сканер SoundCloud + Spotify, который обнаруживает растущих артистов по графу связей. Строит сеть
+                        500+ артистов, вычисляет centrality/reach, определяет «скрытые таланты» через собственный
+                        алгоритм HTC. Telegram CRM с пайплайном коллабов.</p>
+                    <div class="case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">500+</span>
+                            <span class="metric-label">Артистов</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">Neo4j</span>
+                            <span class="metric-label">Граф</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">CRM</span>
+                            <span class="metric-label">Пайплайн</span>
+                        </div>
+                    </div>
+                    <div class="case-stack">
+                        <span>Python</span>
+                        <span>SoundCloud API</span>
+                        <span>Spotify API</span>
+                        <span>Neo4j</span>
+                        <span>NetworkX</span>
+                        <span>aiogram 3</span>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="case-card">
+                    <div class="case-header">
+                        <span class="case-tag">Telegram Bot</span>
+                    </div>
+                    <h3>Бот мониторинга туров для турагентства</h3>
+                    <p>Telegram-бот, который парсит API турагентства, отслеживает горящие туры по выбранным направлениям
+                        и мгновенно отправляет уведомления клиентам. Настраиваемые фильтры по стране, бюджету и датам.
+                    </p>
+                    <div class="case-stack">
+                        <span>Python</span>
+                        <span>REST API</span>
+                        <span>aiogram 3</span>
+                        <span>SQLite</span>
+                    </div>
+                </div>
+
+                <!-- Case 4 -->
+                <div class="case-card">
+                    <div class="case-header">
+                        <span class="case-tag">Парсинг + Аналитика</span>
+                    </div>
+                    <h3>Live-мониторинг спортивных событий</h3>
+                    <p>Бот аналитики футбольных матчей в реальном времени. Парсит live-данные, анализирует статистику и
+                        отправляет алерты при обнаружении аномалий. Работа с rate-limits и нестабильными API.</p>
+                    <div class="case-stack">
+                        <span>Python</span>
+                        <span>Requests</span>
+                        <span>aiogram 3</span>
+                        <span>PostgreSQL</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Услуги</span>
+                <h2>Что могу сделать для вас</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🤖</div>
+                    <h3>Telegram-боты</h3>
+                    <p>Боты для бизнеса: каталог товаров, запись клиентов, уведомления, интеграция с CRM. AI-ассистенты,
+                        которые отвечают клиентам 24/7.</p>
+                    <span class="service-price">от 15,000₽</span>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔍</div>
+                    <h3>Парсеры и скраперы</h3>
+                    <p>Сбор данных с любого сайта — даже без открытого API. Avito, Wildberries, конкуренты.
+                        Реверс-инжиниринг закрытых API через DevTools.</p>
+                    <span class="service-price">от 10,000₽</span>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Мониторинг конкурентов</h3>
+                    <p>Автоматическое отслеживание цен, ассортимента и изменений у конкурентов. Уведомления в Telegram
+                        при важных событиях.</p>
+                    <span class="service-price">от 20,000₽</span>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧠</div>
+                    <h3>AI-интеграции</h3>
+                    <p>Подключение нейросетей к вашим процессам: автоматическая классификация, генерация контента, умная
+                        фильтрация данных.</p>
+                    <span class="service-price">от 20,000₽</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stack -->
+    <section class="stack" id="stack">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Технологии</span>
+                <h2>Мой стек</h2>
+            </div>
+            <div class="stack-grid">
+                <div class="stack-item">
+                    <span class="stack-name">Python</span>
+                    <span class="stack-desc">Основной язык</span>
+                </div>
+                <div class="stack-item">
+                    <span class="stack-name">aiogram 3</span>
+                    <span class="stack-desc">Telegram боты</span>
+                </div>
+                <div class="stack-item">
+                    <span class="stack-name">OpenAI / OpenRouter</span>
+                    <span class="stack-desc">AI интеграции</span>
+                </div>
+                <div class="stack-item">
+                    <span class="stack-name">BeautifulSoup</span>
+                    <span class="stack-desc">Парсинг HTML</span>
+                </div>
+                <div class="stack-item">
+                    <span class="stack-name">Requests / aiohttp</span>
+                    <span class="stack-desc">HTTP клиенты</span>
+                </div>
+                <div class="stack-item">
+                    <span class="stack-name">PostgreSQL / SQLite</span>
+                    <span class="stack-desc">Базы данных</span>
+                </div>
+                <div class="stack-item">
+                    <span class="stack-name">Neo4j / NetworkX</span>
+                    <span class="stack-desc">Графовая аналитика</span>
+                </div>
+                <div class="stack-item">
+                    <span class="stack-name">SQLAlchemy</span>
+                    <span class="stack-desc">ORM</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="cta">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-bg">
+                    <div class="gradient-orb orb-cta-1"></div>
+                    <div class="gradient-orb orb-cta-2"></div>
+                </div>
+                <div class="cta-content">
+                    <h2>Есть задача?</h2>
+                    <p>Напишите — обсудим, предложу решение и оценку. Первая консультация бесплатно.</p>
+                    <a href="https://t.me/blessdev_off" target="_blank" class="btn btn-primary btn-lg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M22 2L11 13" />
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                        </svg>
+                        Написать в Telegram
+                    </a>
+                    <div class="cta-links">
+                        <a href="https://kwork.ru/user/bless_deniss" target="_blank">Kwork</a>
+                        <span>·</span>
+                        <a href="https://www.fl.ru/users/denisrypalov/portfolio/" target="_blank">FL.ru</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-logo">bless<span>dev</span></span>
+                <span class="footer-copy">© 2025 — Автоматизация, боты, AI</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
