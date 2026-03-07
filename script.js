@@ -2,70 +2,42 @@
    blessdev Portfolio — Interactions
    ============================================ */
 
-// ── Cursor Glow (только на десктопе) ──
+// ── Cursor Glow ──
 const cursorGlow = document.getElementById('cursorGlow');
-const isTouchDevice = window.matchMedia('(hover: none)').matches;
+let mouseX = 0, mouseY = 0;
+let currentX = 0, currentY = 0;
 
-if (!isTouchDevice) {
-    let mouseX = 0, mouseY = 0;
-    let currentX = 0, currentY = 0;
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursorGlow.style.opacity = '1';
+});
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursorGlow.style.opacity = '1';
-    });
+document.addEventListener('mouseleave', () => {
+    cursorGlow.style.opacity = '0';
+});
 
-    document.addEventListener('mouseleave', () => {
-        cursorGlow.style.opacity = '0';
-    });
-
-    function animateCursor() {
-        currentX += (mouseX - currentX) * 0.08;
-        currentY += (mouseY - currentY) * 0.08;
-        cursorGlow.style.left = currentX + 'px';
-        cursorGlow.style.top = currentY + 'px';
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
+function animateCursor() {
+    currentX += (mouseX - currentX) * 0.08;
+    currentY += (mouseY - currentY) * 0.08;
+    cursorGlow.style.left = currentX + 'px';
+    cursorGlow.style.top = currentY + 'px';
+    requestAnimationFrame(animateCursor);
 }
-
-// ── Mobile Menu ──
-function toggleMenu() {
-    const links = document.getElementById('navLinks');
-    const burger = document.getElementById('burger');
-    const isOpen = links.classList.toggle('open');
-    burger.classList.toggle('open', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-}
-
-function closeMenu() {
-    const links = document.getElementById('navLinks');
-    const burger = document.getElementById('burger');
-    links.classList.remove('open');
-    burger.classList.remove('open');
-    document.body.style.overflow = '';
-}
+animateCursor();
 
 // ── Nav Scroll ──
 const nav = document.getElementById('nav');
-const scrollIndicator = document.getElementById('scrollIndicator');
+let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
-
     if (scrollY > 50) {
         nav.classList.add('scrolled');
     } else {
         nav.classList.remove('scrolled');
     }
-
-    // Скрываем scroll-индикатор после небольшого скролла
-    if (scrollY > 80) {
-        scrollIndicator.classList.add('hidden');
-    } else {
-        scrollIndicator.classList.remove('hidden');
-    }
+    lastScroll = scrollY;
 });
 
 // ── Counter Animation ──
@@ -80,8 +52,12 @@ function animateCounter(el) {
         const eased = 1 - Math.pow(1 - progress, 4);
         const current = Math.round(eased * target);
         el.textContent = current;
-        if (progress < 1) requestAnimationFrame(update);
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
     }
+
     requestAnimationFrame(update);
 }
 
@@ -96,14 +72,20 @@ const observer = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             const el = entry.target;
 
+            // Cards with delay
             if (el.dataset.delay) {
-                setTimeout(() => el.classList.add('visible'), parseInt(el.dataset.delay));
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, parseInt(el.dataset.delay));
             } else {
                 el.classList.add('visible');
             }
 
+            // Counter animation
             if (el.classList.contains('hero-stats')) {
-                el.querySelectorAll('[data-target]').forEach(counter => animateCounter(counter));
+                el.querySelectorAll('[data-target]').forEach(counter => {
+                    animateCounter(counter);
+                });
             }
 
             observer.unobserve(el);
@@ -111,7 +93,9 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-document.querySelectorAll('.problem-card, .case-card, .service-card, .stack-item').forEach((el) => {
+// Observe elements
+document.querySelectorAll('.problem-card, .case-card, .service-card, .stack-item').forEach((el, i) => {
+    // Stagger cards within same section
     if (!el.dataset.delay) {
         const siblings = el.parentElement.children;
         const index = Array.from(siblings).indexOf(el);
@@ -120,9 +104,10 @@ document.querySelectorAll('.problem-card, .case-card, .service-card, .stack-item
     observer.observe(el);
 });
 
+// Observe stats
 document.querySelectorAll('.hero-stats').forEach(el => observer.observe(el));
 
-// ── Smooth scroll ──
+// ── Smooth scroll for anchor links ──
 document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -132,5 +117,41 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
             const top = target.getBoundingClientRect().top + window.scrollY - offset;
             window.scrollTo({ top, behavior: 'smooth' });
         }
+        // Close mobile menu on nav click
+        closeMobileMenu();
     });
+});
+
+// ── Burger Menu ──
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+const navOverlay = document.getElementById('navOverlay');
+
+function closeMobileMenu() {
+    burger.classList.remove('active');
+    navLinks.classList.remove('open');
+    navOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function openMobileMenu() {
+    burger.classList.add('active');
+    navLinks.classList.add('open');
+    navOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+burger.addEventListener('click', () => {
+    if (navLinks.classList.contains('open')) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
+    }
+});
+
+navOverlay.addEventListener('click', closeMobileMenu);
+
+// Close menu on external link click too
+navLinks.querySelectorAll('a[target="_blank"]').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
 });
