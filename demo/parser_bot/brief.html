@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бриф — Парсер конкурентов | blessdev</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #09090b;
+            color: #fafafa;
+            min-height: 100vh;
+            padding: 48px 24px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: #a1a1aa;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: #a1a1aa;
+            line-height: 1.6;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #818cf8;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #e4e4e7;
+            margin-bottom: 6px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #a1a1aa;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 14px;
+            color: #fafafa;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: rgba(129, 140, 248, 0.5);
+        }
+
+        select option {
+            background: #18181b;
+            color: #fafafa;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #71717a;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .competitors-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .competitors-table th {
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #52525b;
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .competitors-table td {
+            padding: 6px 4px;
+        }
+
+        .competitors-table td input {
+            padding: 9px 10px;
+            font-size: 13px;
+        }
+
+        .add-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            color: #818cf8;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-row:hover {
+            background: rgba(129, 140, 248, 0.2);
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #a1a1aa;
+            transition: all 0.2s;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-label.checked {
+            background: rgba(129, 140, 248, 0.1);
+            border-color: rgba(129, 140, 248, 0.3);
+            color: #818cf8;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: opacity 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: 32px;
+            background: rgba(74, 222, 128, 0.05);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 16px;
+            margin-top: 16px;
+        }
+
+        .success-msg h3 {
+            color: #4ade80;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .success-msg p {
+            color: #a1a1aa;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .success-hint {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(129, 140, 248, 0.08);
+            border: 1px dashed rgba(129, 140, 248, 0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #818cf8;
+            line-height: 1.5;
+        }
+
+        .print-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.25);
+            color: #818cf8;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .print-btn:hover {
+            background: rgba(129, 140, 248, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 13px;
+            color: #3f3f46;
+        }
+
+        .footer a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 24px;
+            }
+
+            .section {
+                border: 1px solid #ddd;
+                background: white;
+            }
+
+            .submit-btn,
+            .add-row,
+            .footer,
+            .print-btn {
+                display: none;
+            }
+
+            input,
+            textarea {
+                border: 1px solid #ddd;
+                color: black;
+                background: #f9f9f9;
+            }
+
+            .success-msg {
+                background: white;
+                border: 1px solid #ddd;
+            }
+
+            .success-msg h3 {
+                color: #16a34a;
+            }
+
+            .success-msg p {
+                color: #3f3f46;
+            }
+
+            .success-hint {
+                background: #f4f4f5;
+                border: 1px dashed #a1a1aa;
+                color: #52525b;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .competitors-table thead {
+                display: none;
+            }
+
+            .competitors-table tr {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+
+            .competitors-table td {
+                display: block;
+                width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">bless<span>dev</span></div>
+            <h1>Бриф на парсер конкурентов</h1>
+            <p>Ответьте на несколько вопросов, чтобы я понял, что именно вам нужно.<br>Это займёт не больше 5 минут.</p>
+        </div>
+
+        <form id="briefForm">
+
+            <!-- 1. Инфо о бизнесе -->
+            <div class="section">
+                <div class="section-title">🏢 01 — Информация о вас</div>
+
+                <div class="field">
+                    <label for="company">Название компании / магазина <span style="color: #ef4444">*</span></label>
+                    <div class="hint">Чтобы я понимал контекст вашего бизнеса</div>
+                    <input type="text" id="company" placeholder="Пример: ИП Иванов / Магазин «TechStore»">
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="telegram">Ваш Telegram <span style="color: #ef4444">*</span></label>
+                        <div class="hint">Куда слать отчёты и уведомления</div>
+                        <input type="text" id="telegram" placeholder="@username или +7...">
+                    </div>
+                    <div class="field">
+                        <label for="niche">Ниша / категория товаров</label>
+                        <div class="hint">Чтобы подобрать нужные параметры парсинга</div>
+                        <input type="text" id="niche" placeholder="Электроника, одежда, косметика...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Площадка -->
+            <div class="section">
+                <div class="section-title">🛒 02 — Площадка</div>
+                <div class="hint" style="margin-bottom: 12px;">Где торгуете? Можно выбрать несколько</div>
+                <div class="checkbox-grid" id="platformGrid">
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Wildberries"> Wildberries</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Ozon"> Ozon</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Яндекс Маркет"> Яндекс Маркет</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Авито"> Авито</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Другая"> Другая</label>
+                </div>
+                <div class="field" id="otherPlatformField" style="margin-top: 12px; display: none;">
+                    <input type="text" id="otherPlatform" placeholder="Укажите площадку">
+                </div>
+            </div>
+
+            <!-- 3. Конкуренты -->
+            <div class="section">
+                <div class="section-title">🎯 03 — Конкуренты для отслеживания</div>
+                <div class="hint" style="margin-bottom: 12px;">В базовый тариф входит до 10 конкурентов. Вставьте ссылки
+                    на товары или магазины.</div>
+                <table class="competitors-table">
+                    <thead>
+                        <tr>
+                            <th>Название / артикул</th>
+                            <th>Ссылка на товар или магазин</th>
+                        </tr>
+                    </thead>
+                    <tbody id="competitorsBody">
+                        <tr>
+                            <td><input type="text" placeholder="Конкурент 1"></td>
+                            <td><input type="url" placeholder="https://..."></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Конкурент 2"></td>
+                            <td><input type="url" placeholder="https://..."></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Конкурент 3"></td>
+                            <td><input type="url" placeholder="https://..."></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="add-row" onclick="addCompetitorRow()">+ Добавить конкурента</div>
+            </div>
+
+            <!-- 4. Какие данные -->
+            <div class="section">
+                <div class="section-title">📊 04 — Какие данные собирать</div>
+                <div class="hint" style="margin-bottom: 12px;">Выберите всё, что хотите отслеживать у конкурентов</div>
+                <div class="checkbox-grid" id="dataGrid">
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Цены"> Цены и их изменения</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Остатки"> Остатки по размерам</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Позиции в выдаче"> Позиции в поиске</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Отзывы и рейтинг"> Отзывы и рейтинг</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Скидки и акции"> Скидки и акции</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox"
+                            value="Фото и описание"> Фото и описание</label>
+                </div>
+            </div>
+
+            <!-- 5. Частота и формат -->
+            <div class="section">
+                <div class="section-title">⏰ 05 — Частота и формат отчётов</div>
+                <div class="row">
+                    <div class="field">
+                        <label for="frequency">Как часто собирать данные</label>
+                        <select id="frequency">
+                            <option value="">Выберите...</option>
+                            <option value="hour">Раз в час</option>
+                            <option value="day">Раз в день</option>
+                            <option value="week">Раз в неделю</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="destination">Куда отправлять отчёт</label>
+                        <select id="destination">
+                            <option value="">Выберите...</option>
+                            <option value="telegram">Telegram-бот</option>
+                            <option value="sheets">Google Sheets</option>
+                            <option value="both">Оба варианта</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field" style="margin-top: 12px;">
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)" style="display: inline-flex;">
+                        <input type="checkbox" id="priceAlert" value="price_alert"> Уведомлять сразу при изменении цены
+                    </label>
+                </div>
+            </div>
+
+            <!-- 6. Доп -->
+            <div class="section">
+                <div class="section-title">💬 06 — Дополнительно</div>
+                <div class="field">
+                    <label for="comments">Пожелания и комментарии</label>
+                    <textarea id="comments"
+                        placeholder="Напишите если есть особые требования, идеи или вопросы"></textarea>
+                </div>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="submitForm()">
+                Отправить бриф →
+            </button>
+        </form>
+
+        <div class="success-msg" id="successMsg">
+            <h3>✅ Бриф готов!</h3>
+            <p>Спасибо! Свяжусь с вами в течение 2 часов для подтверждения и запуска разработки.</p>
+            <div class="success-hint">
+                📸 Сделайте скриншот этой страницы и отправьте разработчику<br>
+                или нажмите кнопку ниже для печати / сохранения в PDF
+            </div>
+            <button class="print-btn" onclick="window.print()">🖨️ Распечатать / Сохранить PDF</button>
+        </div>
+
+        <div class="footer">
+            Разработка: <a href="https://t.me/blessdev_off" target="_blank">@blessdev_off</a>
+            &nbsp;·&nbsp; <a href="https://MrBeastie.github.io" target="_blank">Портфолио</a>
+        </div>
+    </div>
+
+    <script>
+        // Токен хранится на сервере (FastAPI на Railway).
+        // После деплоя папки Фриланс/прокси-сервер на Railway — вставь сюда URL.
+        // Пример: 'https://brief-proxy-production-XXXX.up.railway.app/send'
+        const PROXY_URL = 'https://brief-proxy-production.up.railway.app/send';
+
+        const CLIENT_NAME = new URLSearchParams(window.location.search).get('client') || null;
+
+        function toggleCheck(el, event) {
+            event.preventDefault();
+            el.classList.toggle('checked');
+            el.querySelector('input').checked = el.classList.contains('checked');
+        }
+
+        // Показать поле "Другая площадка" при выборе
+        document.querySelectorAll('#platformGrid .checkbox-label').forEach(el => {
+            const orig = el.getAttribute('onclick');
+            el.setAttribute('onclick', orig + '; showOtherPlatform()');
+        });
+
+        function showOtherPlatform() {
+            const otherChecked = document.querySelector('#platformGrid .checkbox-label:last-child').classList.contains('checked');
+            document.getElementById('otherPlatformField').style.display = otherChecked ? 'block' : 'none';
+        }
+
+        function addCompetitorRow() {
+            const tbody = document.getElementById('competitorsBody');
+            const count = tbody.rows.length + 1;
+            if (count > 10) {
+                const btn = document.querySelector('.add-row');
+                btn.textContent = 'Максимум 10 конкурентов';
+                btn.style.opacity = '0.5';
+                setTimeout(() => { btn.textContent = '+ Добавить конкурента'; btn.style.opacity = ''; }, 2000);
+                return;
+            }
+            const row = document.createElement('tr');
+            row.innerHTML = '<td><input type="text" placeholder="Конкурент ' + count + '"></td><td><input type="url" placeholder="https://..."></td>';
+            tbody.appendChild(row);
+            row.querySelector('input').focus();
+        }
+
+        function collectData() {
+            const company = document.getElementById('company').value.trim() || '—';
+            const telegram = document.getElementById('telegram').value.trim() || '—';
+            const niche = document.getElementById('niche').value.trim() || '—';
+
+            const platforms = [...document.querySelectorAll('#platformGrid .checkbox-label.checked')]
+                .map(el => el.textContent.trim()).join(', ') || '—';
+            const otherPlatform = document.getElementById('otherPlatform').value.trim();
+            const platformsText = otherPlatform ? platforms.replace('Другая', otherPlatform) : platforms;
+
+            const dataTypes = [...document.querySelectorAll('#dataGrid .checkbox-label.checked')]
+                .map(el => el.textContent.trim()).join(', ') || '—';
+
+            const freqSel = document.getElementById('frequency');
+            const frequency = freqSel.value ? freqSel.options[freqSel.selectedIndex].textContent : '—';
+
+            const destSel = document.getElementById('destination');
+            const destination = destSel.value ? destSel.options[destSel.selectedIndex].textContent : '—';
+
+            const priceAlert = document.querySelector('#priceAlert').closest('.checkbox-label').classList.contains('checked') ? 'Да' : 'Нет';
+
+            const rows = [...document.querySelectorAll('#competitorsBody tr')];
+            const competitors = rows.map(r => {
+                const inp = r.querySelectorAll('input');
+                const name = inp[0] ? inp[0].value.trim() : '';
+                const link = inp[1] ? inp[1].value.trim() : '';
+                if (!name && !link) return null;
+                return '  • ' + (name || '?') + ' — ' + (link || 'нет ссылки');
+            }).filter(Boolean).join('\n') || '  —';
+
+            const comments = document.getElementById('comments').value.trim() || '—';
+
+            const clientLine = CLIENT_NAME ? '👤 *Клиент:* ' + CLIENT_NAME : '👤 *Клиент:* неизвестен';
+
+            return [
+                '🗂 *Новый бриф — Парсер конкурентов*',
+                clientLine,
+                '',
+                '🏢 *Компания:* ' + company,
+                '✈️ *Telegram:* ' + telegram,
+                '🏷 *Ниша:* ' + niche,
+                '🛒 *Площадка:* ' + platformsText,
+                '',
+                '🎯 *Конкуренты:*',
+                competitors,
+                '',
+                '📊 *Данные:* ' + dataTypes,
+                '',
+                '⏰ *Частота:* ' + frequency,
+                '📤 *Куда отчёт:* ' + destination,
+                '🔔 *Алерт при смене цены:* ' + priceAlert,
+                '',
+                '💬 *Комментарии:* ' + comments
+            ].join('\n');
+        }
+
+        async function submitForm() {
+            const btn = document.querySelector('.submit-btn');
+            const company = document.getElementById('company').value.trim();
+            const telegram = document.getElementById('telegram').value.trim();
+
+            if (!company || !telegram) {
+                const prevHtml = btn.innerHTML;
+                btn.innerHTML = 'Заполните обязательные поля (отмечены *) ⚠️';
+                btn.style.background = '#ef4444';
+                if (!company) document.getElementById('company').style.borderColor = '#ef4444';
+                if (!telegram) document.getElementById('telegram').style.borderColor = '#ef4444';
+                setTimeout(() => {
+                    btn.innerHTML = prevHtml;
+                    btn.style.background = '';
+                    document.getElementById('company').style.borderColor = '';
+                    document.getElementById('telegram').style.borderColor = '';
+                }, 3000);
+                return;
+            }
+
+            btn.innerHTML = 'Отправляем...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            try {
+                const text = collectData();
+                const res = await fetch(PROXY_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                });
+                const data = await res.json();
+                if (!data.ok) throw new Error(data.description);
+
+                document.getElementById('briefForm').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                btn.innerHTML = 'Ошибка отправки. Попробуйте ещё раз ⚠️';
+                btn.style.background = '#ef4444';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                setTimeout(() => {
+                    btn.innerHTML = 'Отправить бриф →';
+                    btn.style.background = '';
+                }, 4000);
+            }
+        }
+    </script>
+</body>
+
+</html>

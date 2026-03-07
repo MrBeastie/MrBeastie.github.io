@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бриф — AI-бот для Telegram | blessdev</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #09090b;
+            color: #fafafa;
+            min-height: 100vh;
+            padding: 48px 24px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: #a1a1aa;
+        }
+
+        .logo span {
+            color: #818cf8;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: #a1a1aa;
+            line-height: 1.6;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #818cf8;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #e4e4e7;
+            margin-bottom: 6px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #a1a1aa;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 14px;
+            color: #fafafa;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: rgba(129, 140, 248, 0.5);
+        }
+
+        select option {
+            background: #18181b;
+            color: #fafafa;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #71717a;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #a1a1aa;
+            transition: all 0.2s;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-label.checked {
+            background: rgba(129, 140, 248, 0.1);
+            border-color: rgba(129, 140, 248, 0.3);
+            color: #818cf8;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: opacity 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: 32px;
+            background: rgba(74, 222, 128, 0.05);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 16px;
+            margin-top: 16px;
+        }
+
+        .success-msg h3 {
+            color: #4ade80;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .success-msg p {
+            color: #a1a1aa;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .success-hint {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(129, 140, 248, 0.08);
+            border: 1px dashed rgba(129, 140, 248, 0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #818cf8;
+            line-height: 1.5;
+        }
+
+        .print-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.25);
+            color: #818cf8;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .print-btn:hover {
+            background: rgba(129, 140, 248, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 13px;
+            color: #3f3f46;
+        }
+
+        .footer a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+
+        @media print {
+            body { background: white; color: black; padding: 24px; }
+            .section { border: 1px solid #ddd; background: white; }
+            .submit-btn, .footer, .print-btn { display: none; }
+            input, textarea { border: 1px solid #ddd; color: black; background: #f9f9f9; }
+            .success-msg { background: white; border: 1px solid #ddd; }
+            .success-msg h3 { color: #16a34a; }
+            .success-msg p { color: #3f3f46; }
+            .success-hint { background: #f4f4f5; border: 1px dashed #a1a1aa; color: #52525b; }
+        }
+
+        @media (max-width: 640px) {
+            .row { grid-template-columns: 1fr; }
+            .checkbox-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">bless<span>dev</span></div>
+            <h1>Бриф на AI-бота</h1>
+            <p>Ответьте на несколько вопросов, чтобы я понял, что именно вам нужно.<br>Это займёт не больше 5 минут.</p>
+        </div>
+
+        <form id="briefForm">
+
+            <!-- 1. Инфо о бизнесе -->
+            <div class="section">
+                <div class="section-title">🏢 01 — Информация о вас</div>
+
+                <div class="field">
+                    <label for="company">Название бизнеса <span style="color: #ef4444">*</span></label>
+                    <div class="hint">Как будет представляться бот вашим клиентам</div>
+                    <input type="text" id="company" placeholder="Пример: Студия дизайна «Форма»">
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="telegram">Ваш Telegram <span style="color: #ef4444">*</span></label>
+                        <div class="hint">Куда переводить сложные вопросы</div>
+                        <input type="text" id="telegram" placeholder="@username или +7...">
+                    </div>
+                    <div class="field">
+                        <label for="niche">Сфера бизнеса</label>
+                        <div class="hint">Чтобы настроить тон и стиль ответов</div>
+                        <input type="text" id="niche" placeholder="Онлайн-школа, агентство, магазин...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. База знаний -->
+            <div class="section">
+                <div class="section-title">🧠 02 — База знаний бота</div>
+                <div class="hint" style="margin-bottom: 12px;">Чем больше информации вы дадите, тем точнее бот будет отвечать</div>
+
+                <div class="field">
+                    <label for="services">Услуги / товары и цены <span style="color: #ef4444">*</span></label>
+                    <div class="hint">Перечислите основные позиции с ценами</div>
+                    <textarea id="services" placeholder="Консультация — 2000₽ (60 мин)&#10;Разработка лендинга — от 15000₽&#10;Ведение соцсетей — от 10000₽/мес"></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="faq">Частые вопросы клиентов и ответы</label>
+                    <div class="hint">Напишите вопросы, которые вам задают чаще всего, и как вы обычно отвечаете</div>
+                    <textarea id="faq" placeholder="В: Сколько длится доставка?&#10;О: 2-3 рабочих дня по Москве, 5-7 дней по России&#10;&#10;В: Можно оплатить картой?&#10;О: Да, принимаем карты, переводы и наличные"></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="about">Общая информация о бизнесе</label>
+                    <div class="hint">Адрес, график работы, ссылки на соцсети — всё, что может спросить клиент</div>
+                    <textarea id="about" placeholder="Работаем пн-пт 10:00–19:00&#10;Адрес: ул. Ленина, 15&#10;Instagram: @example"></textarea>
+                </div>
+            </div>
+
+            <!-- 3. Поведение бота -->
+            <div class="section">
+                <div class="section-title">🎯 03 — Как должен вести себя бот</div>
+
+                <div class="field">
+                    <label for="tone">Тон общения</label>
+                    <div class="hint" style="margin-bottom: 12px;">Как бот должен разговаривать с клиентами</div>
+                    <div class="checkbox-grid" id="toneGrid">
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Дружелюбный"> Дружелюбный</label>
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Деловой"> Деловой</label>
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="На «вы»"> На «вы»</label>
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="На «ты»"> На «ты»</label>
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="С юмором"> С юмором</label>
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Минимализм"> Кратко</label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Что делать, если бот не знает ответ</label>
+                    <div class="hint" style="margin-bottom: 12px;">Выберите поведение</div>
+                    <div class="checkbox-grid" id="fallbackGrid">
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Перевести на менеджера"> Перевести на вас</label>
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Попросить оставить контакт"> Взять контакт</label>
+                        <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Предложить позвонить"> Предложить звонок</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Дополнительные функции -->
+            <div class="section">
+                <div class="section-title">⚡ 04 — Дополнительные функции</div>
+                <div class="hint" style="margin-bottom: 12px;">Отметьте, что ещё должен уметь бот</div>
+                <div class="checkbox-grid" id="featuresGrid">
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Сбор контактов"> Сбор контактов</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Приветственное сообщение"> Приветствие</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Кнопки быстрых ответов"> Кнопки меню</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Отправка файлов/фото"> Файлы и фото</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Мультиязычность"> Мультиязычность</label>
+                    <label class="checkbox-label" onclick="toggleCheck(this, event)"><input type="checkbox" value="Статистика обращений"> Статистика</label>
+                </div>
+            </div>
+
+            <!-- 5. Доп -->
+            <div class="section">
+                <div class="section-title">💬 05 — Дополнительно</div>
+                <div class="field">
+                    <label for="comments">Пожелания и комментарии</label>
+                    <textarea id="comments" placeholder="Напишите если есть особые требования, примеры ботов которые нравятся, или вопросы"></textarea>
+                </div>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="submitForm()">
+                Отправить бриф →
+            </button>
+        </form>
+
+        <div class="success-msg" id="successMsg">
+            <h3>✅ Бриф готов!</h3>
+            <p>Спасибо! Свяжусь с вами в течение 2 часов для подтверждения и запуска разработки.</p>
+            <div class="success-hint">
+                📸 Сделайте скриншот этой страницы и отправьте разработчику<br>
+                или нажмите кнопку ниже для печати / сохранения в PDF
+            </div>
+            <button class="print-btn" onclick="window.print()">🖨️ Распечатать / Сохранить PDF</button>
+        </div>
+
+        <div class="footer">
+            Разработка: <a href="https://t.me/blessdev_off" target="_blank">@blessdev_off</a>
+            &nbsp;·&nbsp; <a href="https://MrBeastie.github.io" target="_blank">Портфолио</a>
+        </div>
+    </div>
+
+    <script>
+        // Токен хранится на сервере (FastAPI на Railway).
+        // После деплоя папки Фриланс/прокси-сервер на Railway — вставь сюда URL.
+        // Пример: 'https://brief-proxy-production-XXXX.up.railway.app/send'
+        const PROXY_URL = 'https://brief-proxy-production.up.railway.app/send';
+
+        const CLIENT_NAME = new URLSearchParams(window.location.search).get('client') || null;
+
+        function toggleCheck(el, event) {
+            event.preventDefault();
+            el.classList.toggle('checked');
+            el.querySelector('input').checked = el.classList.contains('checked');
+        }
+
+        function getChecked(gridId) {
+            return [...document.querySelectorAll('#' + gridId + ' .checkbox-label.checked')]
+                .map(el => el.textContent.trim()).join(', ') || '—';
+        }
+
+        function collectData() {
+            const company = document.getElementById('company').value.trim() || '—';
+            const telegram = document.getElementById('telegram').value.trim() || '—';
+            const niche = document.getElementById('niche').value.trim() || '—';
+            const services = document.getElementById('services').value.trim() || '—';
+            const faq = document.getElementById('faq').value.trim() || '—';
+            const about = document.getElementById('about').value.trim() || '—';
+            const tone = getChecked('toneGrid');
+            const fallback = getChecked('fallbackGrid');
+            const features = getChecked('featuresGrid');
+            const comments = document.getElementById('comments').value.trim() || '—';
+
+            const clientLine = CLIENT_NAME ? '👤 *Клиент:* ' + CLIENT_NAME : '👤 *Клиент:* неизвестен';
+
+            return [
+                '🗂 *Новый бриф — AI-бот для Telegram*',
+                clientLine,
+                '',
+                '🏢 *Бизнес:* ' + company,
+                '✈️ *Telegram:* ' + telegram,
+                '🏷 *Сфера:* ' + niche,
+                '',
+                '🧠 *Услуги и цены:*',
+                services,
+                '',
+                '❓ *Частые вопросы:*',
+                faq,
+                '',
+                '📋 *О бизнесе:*',
+                about,
+                '',
+                '🎯 *Тон общения:* ' + tone,
+                '🔄 *Если не знает ответ:* ' + fallback,
+                '⚡ *Доп. функции:* ' + features,
+                '',
+                '💬 *Комментарии:* ' + comments
+            ].join('\n');
+        }
+
+        async function submitForm() {
+            const btn = document.querySelector('.submit-btn');
+            const company = document.getElementById('company').value.trim();
+            const telegram = document.getElementById('telegram').value.trim();
+            const services = document.getElementById('services').value.trim();
+
+            if (!company || !telegram || !services) {
+                const prevHtml = btn.innerHTML;
+                btn.innerHTML = 'Заполните обязательные поля (отмечены *) ⚠️';
+                btn.style.background = '#ef4444';
+                if (!company) document.getElementById('company').style.borderColor = '#ef4444';
+                if (!telegram) document.getElementById('telegram').style.borderColor = '#ef4444';
+                if (!services) document.getElementById('services').style.borderColor = '#ef4444';
+                setTimeout(() => {
+                    btn.innerHTML = prevHtml;
+                    btn.style.background = '';
+                    document.getElementById('company').style.borderColor = '';
+                    document.getElementById('telegram').style.borderColor = '';
+                    document.getElementById('services').style.borderColor = '';
+                }, 3000);
+                return;
+            }
+
+            btn.innerHTML = 'Отправляем...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            try {
+                const text = collectData();
+                const res = await fetch(PROXY_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                });
+                const data = await res.json();
+                if (!data.ok) throw new Error(data.description);
+
+                document.getElementById('briefForm').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                btn.innerHTML = 'Ошибка отправки. Попробуйте ещё раз ⚠️';
+                btn.style.background = '#ef4444';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                setTimeout(() => {
+                    btn.innerHTML = 'Отправить бриф →';
+                    btn.style.background = '';
+                }, 4000);
+            }
+        }
+    </script>
+</body>
+
+</html>
