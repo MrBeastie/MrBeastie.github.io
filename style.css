@@ -540,6 +540,34 @@ a {
     color: var(--green);
 }
 
+.case-status.locked {
+    color: var(--text-muted);
+}
+
+.case-status.done {
+    color: var(--accent-1);
+}
+
+.case-client {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    margin-top: -8px;
+}
+
+.case-badges {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.case-private-note {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
 .case-card h3 {
     font-size: 20px;
     font-weight: 700;

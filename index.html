@@ -153,79 +153,94 @@
                 <!-- Case 1 -->
                 <div class="case-card featured">
                     <div class="case-header">
-                        <span class="case-tag">Парсинг + AI</span>
-                        <span class="case-status live">● Live</span>
+                        <span class="case-tag">ПАРСИНГ + AI</span>
+                        <div class="case-badges">
+                            <span class="case-status live">● Live</span>
+                            <span class="case-status locked">🔒 Закрытый проект</span>
+                        </div>
                     </div>
-                    <h3>Мониторинг маркетплейсов с AI-фильтрацией</h3>
-                    <p>Система автоматического поиска выгодных товаров на 2 японских маркетплейсах. Парсеры собирают
-                        лоты по настроенным брендам → AI-модель оценивает каждый лот на выгодность → лучшие сделки
-                        мгновенно приходят в Telegram.</p>
+                    <h3>Собственный инструмент мониторинга маркетплейсов</h3>
+                    <p>Персональный продукт в продакшене. Автоматически отслеживает товарные позиции по заданным критериям, AI-модель оценивает каждый лот и отправляет только релевантные алерты в Telegram. Работает 24/7 без участия человека.</p>
                     <div class="case-metrics">
-                        <div class="metric">
-                            <span class="metric-value">20</span>
-                            <span class="metric-label">Брендов</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">2</span>
-                            <span class="metric-label">Маркетплейса</span>
-                        </div>
                         <div class="metric">
                             <span class="metric-value">24/7</span>
                             <span class="metric-label">Мониторинг</span>
                         </div>
+                        <div class="metric">
+                            <span class="metric-value">AI</span>
+                            <span class="metric-label">Фильтрация</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">TG</span>
+                            <span class="metric-label">Алерты</span>
+                        </div>
                     </div>
                     <div class="case-stack">
                         <span>Python</span>
-                        <span>BeautifulSoup</span>
                         <span>LLM API</span>
-                        <span>aiogram 3</span>
                         <span>PostgreSQL</span>
+                        <span>BeautifulSoup</span>
                     </div>
+                    <p class="case-private-note">Детали проекта доступны по запросу — для агентств и партнёров</p>
                 </div>
 
                 <!-- Case 2 -->
                 <div class="case-card featured">
                     <div class="case-header">
-                        <span class="case-tag">Графовая аналитика</span>
-                        <span class="case-status live">● Live</span>
+                        <span class="case-tag">ГРАФОВАЯ АНАЛИТИКА</span>
+                        <div class="case-badges">
+                            <span class="case-status live">● Live</span>
+                            <span class="case-status locked">🔒 Закрытый проект</span>
+                        </div>
                     </div>
-                    <h3>Аналитическая платформа для музыкальной индустрии</h3>
-                    <p>Сканер SoundCloud + Spotify, который обнаруживает растущих артистов по графу связей. Строит сеть
-                        500+ артистов, вычисляет centrality/reach, определяет «скрытые таланты» через собственный
-                        алгоритм HTC. Telegram CRM с пайплайном коллабов.</p>
+                    <h3>Собственная аналитическая платформа · Закрытая ниша</h3>
+                    <p>Персональный продукт в продакшене. Инструмент для поиска скрытых возможностей в конкретной индустрии — через анализ графа связей и нестандартные метрики. Детали проекта не раскрываются.</p>
                     <div class="case-metrics">
                         <div class="metric">
                             <span class="metric-value">500+</span>
-                            <span class="metric-label">Артистов</span>
+                            <span class="metric-label">Объектов</span>
                         </div>
                         <div class="metric">
-                            <span class="metric-value">Neo4j</span>
-                            <span class="metric-label">Граф</span>
+                            <span class="metric-value">Граф</span>
+                            <span class="metric-label">Анализ</span>
                         </div>
                         <div class="metric">
-                            <span class="metric-value">CRM</span>
-                            <span class="metric-label">Пайплайн</span>
+                            <span class="metric-value">Algo</span>
+                            <span class="metric-label">Алгоритм</span>
                         </div>
                     </div>
                     <div class="case-stack">
                         <span>Python</span>
-                        <span>SoundCloud API</span>
-                        <span>Spotify API</span>
                         <span>Neo4j</span>
                         <span>NetworkX</span>
                         <span>aiogram 3</span>
                     </div>
+                    <p class="case-private-note">Детали проекта доступны по запросу — для агентств и партнёров</p>
                 </div>
 
                 <!-- Case 3 -->
                 <div class="case-card">
                     <div class="case-header">
-                        <span class="case-tag">Telegram Bot</span>
+                        <span class="case-tag">TELEGRAM BOT</span>
+                        <span class="case-status done">● Выполнен</span>
                     </div>
+                    <p class="case-client">Клиентский проект · Kwork</p>
                     <h3>Бот мониторинга туров для турагентства</h3>
-                    <p>Telegram-бот, который парсит API турагентства, отслеживает горящие туры по выбранным направлениям
-                        и мгновенно отправляет уведомления клиентам. Настраиваемые фильтры по стране, бюджету и датам.
-                    </p>
+                    <p>Telegram-бот для турагентства: автоматически отслеживает горящие туры по направлениям, бюджету и датам клиента — и мгновенно уведомляет. Менеджер перестал вручную мониторить 4 сайта ежедневно.</p>
+                    <div class="case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">4</span>
+                            <span class="metric-label">Источника</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">Auto</span>
+                            <span class="metric-label">Мониторинг</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">TG</span>
+                            <span class="metric-label">Алерты</span>
+                        </div>
+                    </div>
                     <div class="case-stack">
                         <span>Python</span>
                         <span>REST API</span>
@@ -237,11 +252,26 @@
                 <!-- Case 4 -->
                 <div class="case-card">
                     <div class="case-header">
-                        <span class="case-tag">Парсинг + Аналитика</span>
+                        <span class="case-tag">ПАРСИНГ + АНАЛИТИКА</span>
+                        <span class="case-status done">● Выполнен</span>
                     </div>
+                    <p class="case-client">Клиентский проект · Kwork</p>
                     <h3>Live-мониторинг спортивных событий</h3>
-                    <p>Бот аналитики футбольных матчей в реальном времени. Парсит live-данные, анализирует статистику и
-                        отправляет алерты при обнаружении аномалий. Работа с rate-limits и нестабильными API.</p>
+                    <p>Бот аналитики футбольных матчей в реальном времени для заказчика. Парсит live-данные, анализирует статистику и отправляет алерты при аномалиях. Реализована устойчивая работа с rate-limits и нестабильными API.</p>
+                    <div class="case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">Live</span>
+                            <span class="metric-label">Данные</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">Auto</span>
+                            <span class="metric-label">Алерты</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">Stable</span>
+                            <span class="metric-label">API стабильность</span>
+                        </div>
+                    </div>
                     <div class="case-stack">
                         <span>Python</span>
                         <span>Requests</span>
@@ -253,12 +283,26 @@
                 <!-- Case 5 — Demo -->
                 <div class="case-card">
                     <div class="case-header">
-                        <span class="case-tag">Telegram Bot</span>
+                        <span class="case-tag">TELEGRAM BOT</span>
                         <span class="case-status live">● Демо доступно</span>
                     </div>
+                    <p class="case-client">Демо-проект · Готовое решение под ключ</p>
                     <h3>Бот записи клиентов для салона красоты</h3>
-                    <p>Полноценная система онлайн-записи прямо в Telegram: каталог услуг с ценами, выбор даты и времени,
-                        подтверждение брони, история записей. Администратор получает уведомление о каждой записи.</p>
+                    <p>Полноценная система онлайн-записи прямо в Telegram: каталог услуг с ценами, выбор даты и времени, подтверждение брони, история записей. Администратор получает уведомление о каждой записи. Подходит для салонов, клиник, фитнес-студий — адаптирую под ваш бизнес за 3–5 дней.</p>
+                    <div class="case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">24/7</span>
+                            <span class="metric-label">Запись</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">TG</span>
+                            <span class="metric-label">Уведомления</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">Авто</span>
+                            <span class="metric-label">Без менеджера</span>
+                        </div>
+                    </div>
                     <div class="case-stack">
                         <span>Python</span>
                         <span>aiogram 3</span>
